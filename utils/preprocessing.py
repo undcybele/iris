@@ -2,9 +2,9 @@ import numpy as np
 import random
 from tqdm import tqdm
 
-from file_utils import *
-from image import Image
-from preprocessing_exceptions import ImageProcessingException
+from utils.file_utils import *
+from utils.image import Image
+from utils.preprocessing_exceptions import ImageProcessingException
 
 ORIGINAL_DATA_DIR = "./data/tmp/original_renamed"
 CIRCLED_DATA_DIR = "./data/tmp/circled"

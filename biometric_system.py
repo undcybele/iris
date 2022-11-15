@@ -3,6 +3,7 @@ import hashlib
 from dataclasses import dataclass
 from os import remove
 from enum import Enum
+import os
 
 from model.iris_classifier_model import IrisClassifier
 from model.user import User
@@ -111,18 +112,18 @@ if __name__ == '__main__':
     parser.add_argument("-m", "--model",
                         type=str,
                         help="Path to the trained classifier model",
-                        default="model/iris_recognition_trained_model.pt")
+                        default="iris_recognition_trained_model.pt")
 
     args = parser.parse_args()
 
     if args.mode == Mode.VERIFY:
         assert args.user is not None, "User ID required for mode 'verify'"
-
+    print(os.getcwd())
     result = run_classification(
         image_path=args.image,
         mode=args.mode,
         user_id=args.user,
-        model_checkpoint_file_path=None
+        model_checkpoint_file_path=args.model
     )
 
     print(f"Program exited with code: "

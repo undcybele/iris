@@ -5,7 +5,7 @@ from torchvision import models, transforms
 from torchvision.datasets.folder import default_loader
 from typing import List, Tuple
 
-from user import User
+from model.user import User
 
 # Data augmentation for training and validation
 DATA_TRANSFORMS = {
@@ -95,7 +95,7 @@ class IrisClassifier(nn.Module):
 
         with torch.set_grad_enabled(False):
             output = self.model(image)
-            index = output.numpy().argmax()
+            index = output.cpu().numpy().argmax()
 
             probabilities = nn.functional.softmax(output, dim=1).squeeze()
 
