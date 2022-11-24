@@ -95,7 +95,7 @@ if __name__ == '__main__':
     train_config = create_train_config()
     trained_model, accuracies = train_model(
         train_config=train_config,
-        model=train_config.model.to(device='cpu'),
+        model=train_config.model.to(device='cuda:0'),
         optimizer=train_config.optimizer,
         criterion=train_config.criterion,
         num_epochs=train_config.num_epochs

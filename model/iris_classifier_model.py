@@ -5,7 +5,7 @@ from torchvision import models, transforms
 from torchvision.datasets.folder import default_loader
 from typing import List, Tuple
 
-from model.user import User
+from user import User
 
 # Data augmentation for training and validation
 DATA_TRANSFORMS = {
