@@ -1,44 +1,60 @@
 import os
 from glob import glob
+import pandas as pd
+import uuid
 
 class User:
-    def __init__(self,id, iris_id, name, email): 
+    def __init__(self,id, name, email): 
         self.id = id
-        self.iris_id = iris_id
         self.name = name
         self.email = email
 
-users = []
-
+CSV_PATH = 'iris/data/system_database/data.csv'
 
 def delete_user(id: str):
-    user = next(user for user in users if user.id == id)
+    found_user = {}
+    users = pd.read_csv(CSV_PATH, header=None).values
+    print(users)
+
+    for user in users:
+      if user.id == id:
+        found_user = user
+        
     try:
-        print('Trying to delete user %s' %user.name + '...')
-        users.remove(user)
-        files = glob(os.path.abspath('data/system_database/registered_users/%s_*' %user.iris_id))
-        [os.remove(file) for file in files if file]
-        print('Successfully deleted!')
-        return 0
+      print('Trying to delete user %s' %user.name + '...')
+      users.remove(user)
+      files = glob(os.path.abspath('data/system_database/registered_users/%s_*' %user.iris_id))
+      [os.remove(file) for file in files if file]
+      return 'Successfully deleted!'
     except:
-        return 1
+        return 'Could not delete user!'
 
+def get_user_name(id: str):
+    found_user = {}
+    users = pd.read_csv(CSV_PATH, header=None).values
+    print(users)
 
+    for user in users:
+      if user.id == id:
+        found_user = user
+    return found_user.name
 
-def get_user_name(iris_id: str):
-    user = next(user for user in users if user.id == id)
-    return user.name
-
-def create_user(name: str, email: str, iris_id: str):
-    new_id=1
+def create_user(name: str, email: str):
+    new_id=uuid.uuid1()
+    users = pd.read_csv(CSV_PATH, header=None).values
+    print(users)
     try:
-        users.append(User(new_id,iris_id, name, email))
-        return 0
+        data = {new_id, name, email}
+        df = pd.DataFrame(data)
+        df.to_csv(CSV_PATH, mode='a', index=False, header=False)
+        users2 = pd.read_csv(CSV_PATH, header=None).values
+        print(users2)
+        return 'Successfully created!'
     except: 
-        return 1
+        return 'Could not create this user!'
 
 
 if __name__ == '__main__':
-    users.append(User(2, 233, 'John Smith', 'js@gmail.com'))
+    users.append(User('2', 'John Smith', 'js@gmail.com'))
     print('WTF')
-    delete_user(2)
+    delete_user('2')
